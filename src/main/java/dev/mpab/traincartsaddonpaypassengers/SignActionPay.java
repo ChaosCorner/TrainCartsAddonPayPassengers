@@ -6,9 +6,12 @@ import com.bergerkiller.bukkit.tc.events.SignChangeActionEvent;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class SignActionPay extends SignAction {
+
+    // essentially a copypasta from https://wiki.traincarts.net/p/TrainCarts/API/SignAction don't be proud of me lol
 
     @Override
     public boolean match(SignActionEvent info) {
@@ -20,13 +23,12 @@ public class SignActionPay extends SignAction {
         // When a [train] sign is placed, activate when powered by redstone when the train
         // goes over the sign, or when redstone is activated.
         if (info.isTrainSign()
-                && info.isAction(SignActionType.GROUP_ENTER, SignActionType.REDSTONE_ON)
+                && info.isAction(SignActionType.MEMBER_ENTER, SignActionType.REDSTONE_ON)
                 && info.isPowered() && info.hasGroup()
         ) {
             for (MinecartMember<?> member : info.getGroup()) {
                 payPassengerPerCart(info, member);
             }
-            return;
         }
 
         // When a [cart] sign is placed, activate when powered by redstone when each cart
@@ -36,7 +38,6 @@ public class SignActionPay extends SignAction {
                 && info.isPowered() && info.hasMember()
         ) {
             payPassengerPerCart(info, info.getMember());
-            return;
         }
     }
 
@@ -49,11 +50,31 @@ public class SignActionPay extends SignAction {
     }
 
     private void payPassengerPerCart(SignActionEvent info, MinecartMember<?> member) {
-        // third line should be the amount each passenger gets paid for adding
-        String amount = info.getLine(2);
+
+        if (TrainCartsAddonPayPassengers.eco == null) {
+            for (Player passenger : member.getEntity().getPlayerPassengers()) {
+                passenger.sendMessage("If you see this, then MB messed up real bad. :(");
+            }
+            return;
+        }
+
+        // third line should be the amount each passenger gets paid for passing over it
+        double amount;
+        try {
+            amount = Double.parseDouble(info.getLine(2));
+        } catch (Exception ignored) {
+            // it just won't do anything from here
+            return;
+        }
 
         for (Player passenger : member.getEntity().getPlayerPassengers()) {
-            // TODO: add payment code here (will require either vault or essentialsx)
+            if (amount > 0) {
+                TrainCartsAddonPayPassengers.eco.depositPlayer(passenger, amount);
+                passenger.sendMessage("&aThanks for using the train! You've been given &e" + amount + " &acurrency!");
+            } else if (amount < 0) {
+                TrainCartsAddonPayPassengers.eco.withdrawPlayer(passenger, Math.abs(amount));
+                passenger.sendMessage("&aThanks for using the train! You've have given &e" + amount + " &acurrency back to the train company!");
+            }
         }
     }
 }
