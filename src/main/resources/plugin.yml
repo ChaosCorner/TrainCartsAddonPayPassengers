@@ -1,0 +1,4 @@
+name: TrainCartsAddonPayPassengers
+version: '${version}'
+main: dev.mpab.traincartsaddonpaypassengers.TrainCartsAddonPayPassengers
+api-version: 1.18
