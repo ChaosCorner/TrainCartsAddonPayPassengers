@@ -35,5 +35,5 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: Plugin JARs
-        path: jars/
+        path: libs/
       
