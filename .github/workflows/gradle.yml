@@ -31,6 +31,7 @@ jobs:
       run: |
         chmod +x gradlew
         ./gradlew jar
+        ls -la
     - name: Archive Plugin JAR
       uses: actions/upload-artifact@master
       with:
