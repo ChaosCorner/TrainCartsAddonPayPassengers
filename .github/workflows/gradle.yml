@@ -28,6 +28,12 @@ jobs:
     - name: Gradle Wrapper Validation
       uses: gradle/wrapper-validation-action@v1.0.4
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@4137be6a8bf7d7133955359dbd952c0ca73b1021
+      run: |
+        chmod +x gradlew
+        ./gradlew build --stacktrace
+    - name: Archive Plugin JAR
+      uses: actions/upload-artifact@master
       with:
-        arguments: build
+        name: Plugin JARs
+        path: jars/
+      
