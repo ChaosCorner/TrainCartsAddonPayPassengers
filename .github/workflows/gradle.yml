@@ -30,7 +30,7 @@ jobs:
     - name: Build with Gradle
       run: |
         chmod +x gradlew
-        ./gradlew build --stacktrace
+        ./gradlew jar
     - name: Archive Plugin JAR
       uses: actions/upload-artifact@master
       with:
