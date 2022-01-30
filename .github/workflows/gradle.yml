@@ -35,6 +35,6 @@ jobs:
     - name: Archive Plugin JAR
       uses: actions/upload-artifact@master
       with:
-        name: Plugin JARs
-        path: build/libs/
+        name: SurvivingPays
+        path: build/libs/*.jar
       
