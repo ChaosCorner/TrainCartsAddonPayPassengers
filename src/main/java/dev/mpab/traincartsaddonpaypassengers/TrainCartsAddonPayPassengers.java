@@ -21,15 +21,12 @@ public final class TrainCartsAddonPayPassengers extends JavaPlugin {
             return;
         }
 
-
-
         SignAction.register(signActionPay);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-
         SignAction.unregister(signActionPay);
     }
 
@@ -48,10 +45,6 @@ public final class TrainCartsAddonPayPassengers extends JavaPlugin {
         eco = rsp.getProvider();
         getLogger().info("Found economy provider! Name: " + rsp.getPlugin().getName());
         return true;
-    }
-
-    public static Economy getEco() {
-        return eco;
     }
 }
 

@@ -6,7 +6,7 @@ import com.bergerkiller.bukkit.tc.events.SignChangeActionEvent;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import com.bergerkiller.bukkit.tc.signactions.SignActionType;
 import com.bergerkiller.bukkit.tc.utils.SignBuildOptions;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class SignActionPay extends SignAction {
@@ -53,7 +53,7 @@ public class SignActionPay extends SignAction {
 
         if (TrainCartsAddonPayPassengers.eco == null) {
             for (Player passenger : member.getEntity().getPlayerPassengers()) {
-                passenger.sendMessage("If you see this, then MB messed up real bad. :(");
+                passenger.sendMessage(ChatColor.RED + "If you see this, then MB messed up real bad. :(");
             }
             return;
         }
@@ -70,10 +70,10 @@ public class SignActionPay extends SignAction {
         for (Player passenger : member.getEntity().getPlayerPassengers()) {
             if (amount > 0) {
                 TrainCartsAddonPayPassengers.eco.depositPlayer(passenger, amount);
-                passenger.sendMessage("&aThanks for using the train! You've been given &e" + amount + " &acurrency!");
+                passenger.sendMessage(ChatColor.GREEN + "Thanks for using the train! You've been given " + ChatColor.YELLOW + amount + ChatColor.GREEN + " currency!");
             } else if (amount < 0) {
                 TrainCartsAddonPayPassengers.eco.withdrawPlayer(passenger, Math.abs(amount));
-                passenger.sendMessage("&aThanks for using the train! You've have given &e" + amount + " &acurrency back to the train company!");
+                passenger.sendMessage(ChatColor.GREEN + "Thanks for using the train! You've have given " + ChatColor.YELLOW + amount + ChatColor.GREEN + " currency back to the train company!");
             }
         }
     }
